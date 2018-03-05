@@ -2,14 +2,16 @@ package com.codecool.lanpong.models;
 
 public class Ball {
 
+    private double radius;
     private int xPos;
     private int yPos;
-    private int[] direction;
+    private boolean goesRight;
 
     public Ball() {
+        this.radius = 15;
         this.xPos = 0;
         this.yPos = 0;
-        this.direction = new int[]{0, 0};
+        this.goesRight = true;
     }
 
     public int getxPos() {
@@ -28,11 +30,15 @@ public class Ball {
         this.yPos = yPos;
     }
 
-    public int[] getDirection() {
-        return direction;
+    public boolean getGoesRight() {
+        return goesRight;
     }
 
-    public void setDirection(int[] direction) {
-        this.direction = direction;
+    public void setGoesRight(boolean goesRight) {
+        this.goesRight = goesRight;
+    }
+
+    public double getRadius() {
+        return radius;
     }
 }
