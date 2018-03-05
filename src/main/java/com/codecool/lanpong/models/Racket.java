@@ -8,8 +8,6 @@ public class Racket {
     private int width;
 
     public Racket() {
-        this.xPos = 0;
-        this.yPos = 0;
         this.height = 100;
         this.width = 15;
     }
