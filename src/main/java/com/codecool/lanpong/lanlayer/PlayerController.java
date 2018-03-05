@@ -1,7 +1,6 @@
 package com.codecool.lanpong.lanlayer;
 
-public interface Controller {
+public interface PlayerController {
 
     void start();
-    void stop();
 }
