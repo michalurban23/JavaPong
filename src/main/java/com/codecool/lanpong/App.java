@@ -15,18 +15,10 @@ public class App {
             PlayerControllerFactory factory = new PlayerControllerFactoryImpl(args);
             PlayerController controller = factory.get();
             controller.start();
-<<<<<<< HEAD
-            while (true) {
-                ;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-=======
         } catch (NumberFormatException | UnknownHostException e) {
             System.out.println("Wrong parameters");
         } catch (IOException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
->>>>>>> 633b60ddcbd413ad77f218a1ef5929c74a172aae
+            e.printStackTrace();
         }
     }
 }

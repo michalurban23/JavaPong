@@ -27,8 +27,10 @@ public class Server implements PlayerController {
 
     private void initializeSocket() throws IOException {
 
-        serverSocket = new ServerSocket(port, 0, address);
+        serverSocket = new ServerSocket(port);
+        System.out.println("Waiting for connection on port :: " + port);
         Socket client = serverSocket.accept();
+        System.out.println("Connection from :: " + client.getInetAddress());
     }
 
 }
