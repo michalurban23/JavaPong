@@ -1,11 +1,11 @@
 package com.codecool.lanpong;
 
+import com.codecool.lanpong.game.GameController;
 import com.codecool.lanpong.lanlayer.PlayerController;
 import com.codecool.lanpong.lanlayer.PlayerControllerFactory;
 import com.codecool.lanpong.lanlayer.PlayerControllerFactoryImpl;
 import com.codecool.lanpong.view.WindowDisplay;
 import javafx.application.Application;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
