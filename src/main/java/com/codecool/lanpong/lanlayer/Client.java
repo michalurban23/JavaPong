@@ -22,6 +22,19 @@ public class Client implements PlayerController {
     public void start() throws IOException {
 
         initializeSocket();
+        try {
+            run();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void run() throws InterruptedException {
+
+        while (true) {
+            Thread.sleep(100);
+            break;
+        }
     }
 
     private void initializeSocket() throws IOException{
