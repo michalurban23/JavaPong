@@ -5,12 +5,32 @@ public class Board {
     private int maxWidth;
     private int maxHeight;
     private Ball ball;
-    private Racket player1;
-    private Racket player2;
+    private Racket racket1;
+    private Racket racket2;
 
     public Board(int maxWidth, int maxHeight) {
         this.maxWidth = maxWidth;
         this.maxHeight = maxHeight;
+    }
+
+    public void setGameParameters() {
+        createAndSetRackets();
+        createAndSetBallInitialCoords();
+    }
+
+    private void createAndSetBallInitialCoords() {
+        this.ball = new Ball();
+        ball.setxPos(maxWidth / 2);
+        ball.setyPos(maxHeight / 2);
+    }
+
+    private void createAndSetRackets() {
+        this.racket1 = new Racket();
+        this.racket2 = new Racket();
+        racket1.setxPos(0);
+        racket1.setyPos(maxHeight / 2);
+        racket2.setxPos(maxWidth - racket2.getWidth());
+        racket2.setyPos(maxHeight / 2);
     }
 
     public Ball getBall() {
@@ -21,20 +41,20 @@ public class Board {
         this.ball = ball;
     }
 
-    public Racket getPlayer1() {
-        return player1;
+    public Racket getRacket1() {
+        return racket1;
     }
 
-    public void setPlayer1(Racket player1) {
-        this.player1 = player1;
+    public void setRacket1(Racket racket1) {
+        this.racket1 = racket1;
     }
 
-    public Racket getPlayer2() {
-        return player2;
+    public Racket getRacket2() {
+        return racket2;
     }
 
-    public void setPlayer2(Racket player2) {
-        this.player2 = player2;
+    public void setRacket2(Racket racket2) {
+        this.racket2 = racket2;
     }
 
     public int getMaxWidth() {
