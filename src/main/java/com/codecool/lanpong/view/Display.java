@@ -1,4 +1,5 @@
 package com.codecool.lanpong.view;
 
-public class Display {
+public interface Display {
+
 }
