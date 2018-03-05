@@ -36,4 +36,20 @@ public class Board {
     public void setPlayer2(Racket player2) {
         this.player2 = player2;
     }
+
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
+    public void setMaxWidth(int maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+    }
 }
