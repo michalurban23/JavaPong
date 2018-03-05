@@ -12,10 +12,30 @@ public class PlayerControllerFactoryImpl implements PlayerControllerFactory {
 
     public PlayerControllerFactoryImpl(String[] settings) throws IOException {
 
-        this.playerMode = settings[0];
-        this.address = InetAddress.getByName(settings[1]);
-        this.port = Integer.parseInt(settings[2]);
-        this.userName = settings[3];
+        try {
+            this.playerMode = settings[0];
+            determineParameters(settings);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("Wrong input parameters");
+        }
+    }
+
+    private void determineParameters(String[] settings) throws IOException {
+
+        switch (playerMode) {
+            case "server":
+                this.address = InetAddress.getLocalHost();
+                this.port = Integer.parseInt(settings[1]);
+                this.userName = settings[2];
+                break;
+            case "client":
+                this.address = InetAddress.getByName(settings[1]);
+                this.port = Integer.parseInt(settings[2]);
+                this.userName = settings[3];
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong input parameters");
+        }
     }
 
     @Override
