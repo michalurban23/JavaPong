@@ -14,6 +14,9 @@ public class App {
             PlayerControllerFactory factory = new PlayerControllerFactoryImpl(args);
             PlayerController controller = factory.get();
             controller.start();
+            while (true) {
+                ;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

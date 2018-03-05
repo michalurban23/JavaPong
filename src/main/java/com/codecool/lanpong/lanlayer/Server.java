@@ -3,6 +3,7 @@ package com.codecool.lanpong.lanlayer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server implements PlayerController {
 
@@ -27,6 +28,7 @@ public class Server implements PlayerController {
     private void initializeSocket() throws IOException {
 
         serverSocket = new ServerSocket(port, 0, address);
+        Socket client = serverSocket.accept();
     }
 
 }
