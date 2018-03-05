@@ -27,12 +27,6 @@ public class WindowDisplay extends Application implements Display {
     public WindowDisplay(){}
 
     public void start(Stage stage) throws Exception {
-        ball.setxPos(board.getMaxWidth() / 2);
-        ball.setyPos(board.getMaxHeight() / 2);
-        racket1.setyPos(board.getMaxHeight() / 2);
-        racket2.setyPos(board.getMaxHeight() / 2);
-        racket1.setxPos(0);
-        racket2.setxPos(board.getMaxWidth() - racket2.getWidth());
         Canvas canvas = new Canvas(board.getMaxWidth(), board.getMaxHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));

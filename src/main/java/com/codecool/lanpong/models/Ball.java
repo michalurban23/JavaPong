@@ -9,8 +9,6 @@ public class Ball {
 
     public Ball() {
         this.radius = 15;
-        this.xPos = 0;
-        this.yPos = 0;
         this.goesRight = true;
     }
 
