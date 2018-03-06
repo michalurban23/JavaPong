@@ -18,20 +18,19 @@ import javafx.util.Duration;
 
 public class WindowDisplay extends Application implements Display {
 
-    private Board board = new Board(800, 600);
-    private Racket racket1 = new Racket();
-    private Racket racket2 = new Racket();
-    private Ball ball = new Ball();
+    private Board board;
     private boolean gameStarted;
 
-    public WindowDisplay(){}
+    public WindowDisplay(Board board){
+        this.board = board;
+    }
 
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(board.getMaxWidth(), board.getMaxHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));
         tl.setCycleCount(Timeline.INDEFINITE);
-        canvas.setOnMouseMoved(e -> racket1.setyPos((int) e.getY()));
+        canvas.setOnMouseMoved(e -> board.getRacket1().setyPos((int) e.getY()));
         canvas.setOnMouseClicked(e -> gameStarted = true);
         stage.setScene(new Scene(new StackPane(canvas)));
         stage.show();
@@ -45,22 +44,20 @@ public class WindowDisplay extends Application implements Display {
         gc.setFont(Font.font(25));
 
         if (gameStarted) {
-            if (ball.getGoesRight()) {
-                ball.setxPos(ball.getxPos() + 1);
+            if (board.getBall().getGoesRight()) {
+                board.getBall().setxPos(board.getBall().getxPos() + 1);
             } else {
-                ball.setxPos(ball.getxPos() - 1);
+                board.getBall().setxPos(board.getBall().getxPos() - 1);
             }
-            gc.fillOval(ball.getxPos(), ball.getyPos(), ball.getRadius(), ball.getRadius());
+            gc.fillOval(board.getBall().getxPos(), board.getBall().getyPos(), board.getBall().getRadius(), board.getBall().getRadius());
         } else {
             gc.setStroke(Color.YELLOW);
             gc.setTextAlign(TextAlignment.CENTER);
             gc.strokeText("Click to start", board.getMaxWidth() /2, board.getMaxHeight() / 2);
-            ball.setxPos(board.getMaxWidth() / 2);
-            ball.setyPos(board.getMaxHeight() / 2);
         }
 
-        gc.fillRect(racket1.getxPos(), racket1.getyPos(), racket1.getWidth(), racket1.getHeight());
-        gc.fillRect(racket2.getxPos(), racket2.getyPos(), racket2.getWidth(), racket2.getHeight());
+        gc.fillRect(board.getRacket1().getxPos(), board.getRacket1().getyPos(), board.getRacket1().getWidth(), board.getRacket1().getHeight());
+        gc.fillRect(board.getRacket2().getxPos(), board.getRacket2().getyPos(), board.getRacket2().getWidth(), board.getRacket2().getHeight());
     }
 
 }

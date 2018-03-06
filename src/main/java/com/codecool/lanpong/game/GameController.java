@@ -3,6 +3,7 @@ package com.codecool.lanpong.game;
 import com.codecool.lanpong.models.Board;
 import com.codecool.lanpong.view.WindowDisplay;
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class GameController implements Runnable {
 
@@ -15,6 +16,12 @@ public class GameController implements Runnable {
 
     @Override
     public void run() {
-        Application.launch(WindowDisplay.class);
+        WindowDisplay windowDisplay = new WindowDisplay(board);
+//        Application.launch(windowDisplay);
+        try {
+            windowDisplay.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
