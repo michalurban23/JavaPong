@@ -6,7 +6,7 @@ import com.sun.javafx.application.ParametersImpl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class GameController implements Runnable {
+public class GameController extends Application implements Runnable {
 
     private Board board;
 
@@ -21,5 +21,10 @@ public class GameController implements Runnable {
         WindowDisplay.launch();
         WindowDisplay.Parameters parameters = new ParametersImpl();
         System.out.println(parameters.getNamed());
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
     }
 }
