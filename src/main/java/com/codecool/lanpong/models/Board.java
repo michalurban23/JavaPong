@@ -29,7 +29,7 @@ public class Board {
         this.racket2 = new Racket();
         racket1.setxPos(0);
         racket1.setyPos(maxHeight / 2);
-        racket2.setxPos(maxWidth - racket2.getWidth());
+        racket2.setxPos(0);
         racket2.setyPos(maxHeight / 2);
     }
 
