@@ -33,8 +33,8 @@ public class Client implements PlayerController {
 
     private void run() throws InterruptedException {
 
-        Thread t = new Thread(new GameController());
-
+        GameController gameController = new GameController();
+        gameController.run();
     }
 
     private void initializeSocket() throws IOException{
