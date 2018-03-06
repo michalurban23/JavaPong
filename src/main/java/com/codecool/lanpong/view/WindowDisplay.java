@@ -18,11 +18,13 @@ import javafx.util.Duration;
 
 public class WindowDisplay extends Application implements Display {
 
-    private Board board;
-    private boolean gameStarted;
+    private static Board board = new Board(800, 600);
+    private Racket racket1 = new Racket();
+    private Racket racket2 = new Racket();
+    private Ball ball = new Ball();
+    private boolean gameStarted = false;
 
-    public WindowDisplay(Board board){
-        this.board = board;
+    public WindowDisplay(){
     }
 
     public void start(Stage stage) throws Exception {
@@ -42,6 +44,16 @@ public class WindowDisplay extends Application implements Display {
         gc.fillRect(0, 0, board.getMaxWidth(), board.getMaxHeight());
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font(25));
+        ball.setyPos(300);
+        ball.setxPos(400);
+        ball.setGoesRight(true);
+        racket1.setyPos(board.getMaxHeight() / 2);
+        racket1.setxPos(0);
+        racket2.setyPos(board.getMaxHeight() / 2);
+        racket2.setxPos(board.getMaxWidth() - racket2.getWidth());
+        board.setRacket1(racket1);
+        board.setRacket2(racket2);
+        board.setBall(ball);
 
         if (gameStarted) {
             if (board.getBall().getGoesRight()) {
@@ -58,6 +70,26 @@ public class WindowDisplay extends Application implements Display {
 
         gc.fillRect(board.getRacket1().getxPos(), board.getRacket1().getyPos(), board.getRacket1().getWidth(), board.getRacket1().getHeight());
         gc.fillRect(board.getRacket2().getxPos(), board.getRacket2().getyPos(), board.getRacket2().getWidth(), board.getRacket2().getHeight());
+    }
+
+    public static int getBallXPos() {
+        return board.getBall().getxPos();
+    }
+
+    public static int getBallYPos() {
+        return board.getBall().getyPos();
+    }
+
+    public static int getRacket1XPos() {
+        return board.getRacket1().getxPos();
+    }
+
+    public static int getRacket2XPos() {
+        return board.getRacket2().getxPos();
+    }
+
+    public static boolean getBallDirection() {
+        return board.getBall().getGoesRight();
     }
 
 }

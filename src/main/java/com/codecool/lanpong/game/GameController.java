@@ -1,30 +1,27 @@
 package com.codecool.lanpong.game;
 
-import com.codecool.lanpong.models.Board;
-import com.codecool.lanpong.view.WindowDisplay;
-import com.sun.javafx.application.ParametersImpl;
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.codecool.lanpong.models.GameStatus;
 
-public class GameController extends Application implements Runnable {
+public class GameController {
 
-    private Board board;
+    private GameStatus gameStatus;
 
     public GameController() {
-        this.board = new Board(800, 600);
-        board.setGameParameters();
     }
 
-    @Override
-    public void run() {
+    public void handleGame() {
 
-        WindowDisplay.launch();
-        WindowDisplay.Parameters parameters = new ParametersImpl();
-        System.out.println(parameters.getNamed());
+        while(true) {
+            updateGameStatus();
+            System.out.println(gameStatus.getBallX());
+        }
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
+    private void updateGameStatus() {
+        gameStatus.setBallDirection(DataRetriever.getBallDirection());
+        gameStatus.setBallX(DataRetriever.getBallXPos());
+        gameStatus.setBallY(DataRetriever.getBallYPos());
+        gameStatus.setServerRacketPos(DataRetriever.getRacket1XPos());
+        gameStatus.setClientRacketPos(DataRetriever.getRacket2XPos());
     }
 }

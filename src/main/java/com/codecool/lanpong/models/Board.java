@@ -13,26 +13,6 @@ public class Board {
         this.maxHeight = maxHeight;
     }
 
-    public void setGameParameters() {
-        createAndSetRackets();
-        createAndSetBallInitialCoords();
-    }
-
-    private void createAndSetBallInitialCoords() {
-        this.ball = new Ball();
-        ball.setxPos(maxWidth / 2);
-        ball.setyPos(maxHeight / 2);
-    }
-
-    private void createAndSetRackets() {
-        this.racket1 = new Racket();
-        this.racket2 = new Racket();
-        racket1.setxPos(0);
-        racket1.setyPos(maxHeight / 2);
-        racket2.setxPos(maxWidth - racket2.getWidth());
-        racket2.setyPos(maxHeight / 2);
-    }
-
     public Ball getBall() {
         return ball;
     }

@@ -1,6 +1,7 @@
 package com.codecool.lanpong.lanlayer;
 
 import com.codecool.lanpong.game.GameController;
+import com.codecool.lanpong.game.WindowThreadBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -24,21 +25,16 @@ public class Client implements PlayerController {
     public void start() throws IOException {
 
         initializeSocket();
-        try {
-            run();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void run() throws InterruptedException {
-
         GameController gameController = new GameController();
-        gameController.run();
+        gameController.handleGame();
     }
 
-    private void initializeSocket() throws IOException{
+    private void initializeSocket() throws IOException {
 
         socket = new Socket(address, port);
+        System.out.println("Connected to server on :: " + address);
+
+        Thread t = new Thread(new WindowThreadBuilder());
+        t.start();
     }
 }
