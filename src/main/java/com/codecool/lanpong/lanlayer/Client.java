@@ -1,5 +1,7 @@
 package com.codecool.lanpong.lanlayer;
 
+import com.codecool.lanpong.game.GameController;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -31,10 +33,8 @@ public class Client implements PlayerController {
 
     private void run() throws InterruptedException {
 
-        while (true) {
-            Thread.sleep(100);
-            break;
-        }
+        Thread t = new Thread(new GameController());
+
     }
 
     private void initializeSocket() throws IOException{

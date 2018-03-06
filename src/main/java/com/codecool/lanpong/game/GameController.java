@@ -13,7 +13,6 @@ public class GameController implements Runnable {
         board.setGameParameters();
     }
 
-
     @Override
     public void run() {
         Application.launch(WindowDisplay.class);
