@@ -27,9 +27,13 @@ public class DataReadWriteController {
         this.ois = new ObjectInputStream(is);
     }
 
-    public GameStatus readData() throws IOException, ClassNotFoundException {
+    public GameStatus readData() throws IOException {
 
-        return (GameStatus) ois.readObject();
+        try {
+            return (GameStatus) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            throw new IOException();
+        }
     }
 
     public void sendData(GameStatus gs) throws IOException {

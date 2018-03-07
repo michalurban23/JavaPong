@@ -8,8 +8,6 @@ public class Ball {
     private boolean goesRight;
 
     public Ball() {
-        this.radius = 15;
-        this.goesRight = true;
     }
 
     public int getxPos() {

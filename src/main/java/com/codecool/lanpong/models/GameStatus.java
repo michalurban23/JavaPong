@@ -1,6 +1,8 @@
 package com.codecool.lanpong.models;
 
-public class GameStatus {
+import java.io.Serializable;
+
+public class GameStatus implements Serializable {
 
     private int ballX;
     private int ballY;
@@ -56,5 +58,15 @@ public class GameStatus {
     public void setClientRacketPos(int clientRacketPos) {
 
         this.clientRacketPos = clientRacketPos;
+    }
+
+    @Override
+    public String toString() {
+
+        return "ballDirection: " + this.ballDirection + ", " +
+                "ballX: " + this.ballX + ", " +
+                "ballY: " + this.ballY + ", " +
+                "serverRacket: " + this.serverRacketPos + ", " +
+                "clientRacket: " + this.clientRacketPos;
     }
 }
