@@ -35,8 +35,8 @@ public class Server implements PlayerController {
 
         serverSocket = new ServerSocket(port);
         System.out.println("Waiting for connection on port :: " + port);
-        // clientSocket = serverSocket.accept();
-        clientSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
+        clientSocket = serverSocket.accept();
+        // clientSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
 
         Thread t = new Thread(new WindowThreadBuilder());
         t.start();

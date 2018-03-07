@@ -14,16 +14,12 @@ public final class DataRetriever {
         return WindowDisplay.getBallYPos();
     }
 
-    public static int getRacket1XPos() {
-        return WindowDisplay.getRacket1XPos();
+    public static int getRacket1YPos() {
+        return WindowDisplay.getRacket1YPos();
     }
 
-    public static int getRacket2XPos() {
-        return WindowDisplay.getRacket2XPos();
-    }
-
-    public static boolean getBallDirection() {
-        return WindowDisplay.getBallDirection();
+    public static int getRacket2YPos() {
+        return WindowDisplay.getRacket2YPos();
     }
 
     public static GameStatus getGameStatus() {

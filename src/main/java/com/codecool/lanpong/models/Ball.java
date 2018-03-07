@@ -2,18 +2,19 @@ package com.codecool.lanpong.models;
 
 public class Ball {
 
-    private final double radius = 15;
+    private int radius;
     private int xPos;
     private int yPos;
-    private boolean goesRight;
+    private double angle;  // 0-360, where 0 is right, 90 is top
 
     public Ball() {
     }
 
-    public Ball(int xPos, int yPos) {
+    public Ball(int xPos, int yPos, int radius) {
 
         this.xPos = xPos;
         this.yPos = yPos;
+        this.radius = radius;
     }
 
     public int getxPos() {
@@ -32,15 +33,20 @@ public class Ball {
         this.yPos = yPos;
     }
 
-    public boolean getGoesRight() {
-        return goesRight;
+    public void setAngle(double angle) {
+        this.angle = angle;
     }
 
-    public void setGoesRight(boolean goesRight) {
-        this.goesRight = goesRight;
+    public double getAngle() {
+        return this.angle;
     }
 
     public double getRadius() {
         return radius;
+    }
+
+    public void setRadius(int radius) {
+
+        this.radius = radius;
     }
 }

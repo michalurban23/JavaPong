@@ -2,6 +2,7 @@ package com.codecool.lanpong.game;
 
 import com.codecool.lanpong.lanlayer.DataReadWriteController;
 import com.codecool.lanpong.lanlayer.PlayerController;
+import com.codecool.lanpong.lanlayer.Server;
 import com.codecool.lanpong.models.GameStatus;
 
 import java.io.IOException;
@@ -12,7 +13,12 @@ public class GameController {
     private static PlayerController playerController;
     private DataReadWriteController dataController;
     private boolean gameRunning;
-    private final long gameSpeed = 500;
+    // private boolean ballJustBounced;
+
+    private static final long GAME_SPEED = 20;
+    private static final int BOARD_WIDTH = 600;
+    private static final int BOARD_HEIGHT = 400;
+    private static final int BALL_RADIUS = 15;
 
     public GameController(PlayerController pc) {
 
@@ -49,7 +55,7 @@ public class GameController {
     private static void createStartingState() {
 
         gameStatus = new GameStatus();
-        gameStatus.setBallDirection(true);
+        gameStatus.setBallAngle(80);
         gameStatus.setBallX(400);
         gameStatus.setBallY(300);
         gameStatus.setServerRacketPos(300);
@@ -59,24 +65,78 @@ public class GameController {
     private void updateGameStatus() throws IOException {
 
         try {
-            Thread.sleep(gameSpeed);
+            Thread.sleep(GAME_SPEED/2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        updateBallPosition();
         sendStatus();
         readStatus();
     }
 
     private void sendStatus() throws IOException {
 
-        gameStatus.setBallDirection(DataRetriever.getBallDirection());
-        gameStatus.setBallX(DataRetriever.getBallXPos());
-        gameStatus.setBallY(DataRetriever.getBallYPos());
-        gameStatus.setServerRacketPos(DataRetriever.getRacket1XPos());
-        gameStatus.setClientRacketPos(DataRetriever.getRacket2XPos());
-
-        System.out.println(gameStatus);
+        if (playerController instanceof Server) {
+            gameStatus.setServerRacketPos(DataRetriever.getRacket1YPos());
+        } else {
+            gameStatus.setClientRacketPos(DataRetriever.getRacket2YPos());
+        }
         dataController.sendData(gameStatus);
+    }
+
+    private void updateBallPosition() {
+
+        // Check collisions:
+        boolean hitBorder = checkBorderCollisions();
+        boolean hitRacket = checkRacketCollisions();
+
+        // Determine ball direction:
+        if (hitBorder) {
+            gameStatus.setBallAngle(360 - gameStatus.getBallAngle());
+            shiftBall();
+        }
+        if (hitRacket) {
+            gameStatus.setBallAngle(90 + gameStatus.getBallAngle());
+            shiftBall();
+        }
+
+        int distance = (int) GAME_SPEED;
+        int xDistance = (int) (distance * Math.cos(Math.toRadians(gameStatus.getBallAngle())));
+        int yDistance = (int) (distance * Math.sin(Math.toRadians(gameStatus.getBallAngle())));
+
+        // Move ball horizontally:
+        gameStatus.setBallX(DataRetriever.getBallXPos() + xDistance);
+
+        // Move ball vertically:
+        gameStatus.setBallY(DataRetriever.getBallYPos() + yDistance);
+    }
+
+    private void shiftBall() {
+
+        int xPos = gameStatus.getBallX();
+        int yPos = gameStatus.getBallY();
+
+        if (Math.abs(xPos) < 0) {
+            gameStatus.setBallX(xPos + 2*BALL_RADIUS);
+        } else if (Math.abs(BOARD_WIDTH - xPos) < BALL_RADIUS) {
+            gameStatus.setBallX(xPos - 2*BALL_RADIUS);
+        }
+
+        if (Math.abs(yPos) < 0) {
+            gameStatus.setBallY(yPos + 2*BALL_RADIUS);
+        } else if (Math.abs(BOARD_HEIGHT - yPos) < BALL_RADIUS) {
+            gameStatus.setBallY(yPos - 2*BALL_RADIUS);
+        }
+    }
+
+    private boolean checkRacketCollisions() {
+
+        return gameStatus.getBallX() < 0 || gameStatus.getBallX() > BOARD_WIDTH - BALL_RADIUS;
+    }
+
+    private boolean checkBorderCollisions() {
+
+        return gameStatus.getBallY() < 0 || gameStatus.getBallY() > BOARD_HEIGHT - BALL_RADIUS;
     }
 
     private void readStatus() throws IOException {
@@ -94,5 +154,24 @@ public class GameController {
 
     public static PlayerController getGameOwner() {
         return playerController;
+    }
+
+    public static double getGameSpeed() {
+        return GAME_SPEED;
+    }
+
+    public static int getBoardWidth() {
+
+        return BOARD_WIDTH;
+    }
+
+    public static int getBoardHeight() {
+
+        return BOARD_HEIGHT;
+    }
+
+    public static int getBallRadius() {
+
+        return BALL_RADIUS;
     }
 }

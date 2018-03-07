@@ -6,7 +6,7 @@ public class GameStatus implements Serializable {
 
     private int ballX;
     private int ballY;
-    private boolean ballDirection;
+    private double ballAngle;
     private int serverRacketPos;
     private int clientRacketPos;
 
@@ -30,14 +30,14 @@ public class GameStatus implements Serializable {
         this.ballY = ballY;
     }
 
-    public boolean isBallDirection() {
+    public double getBallAngle() {
 
-        return ballDirection;
+        return ballAngle;
     }
 
-    public void setBallDirection(boolean ballDirection) {
+    public void setBallAngle(double ballAngle) {
 
-        this.ballDirection = ballDirection;
+        this.ballAngle = ballAngle % 360;
     }
 
     public int getServerRacketPos() {
@@ -63,7 +63,7 @@ public class GameStatus implements Serializable {
     @Override
     public String toString() {
 
-        return "ballDirection: " + this.ballDirection + ", " +
+        return "ballAngle: " + this.ballAngle + ", " +
                 "ballX: " + this.ballX + ", " +
                 "ballY: " + this.ballY + ", " +
                 "serverRacket: " + this.serverRacketPos + ", " +
