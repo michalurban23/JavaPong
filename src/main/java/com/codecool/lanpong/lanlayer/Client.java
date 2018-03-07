@@ -26,7 +26,7 @@ public class Client implements PlayerController {
     public void start() throws IOException {
 
         initializeSocket();
-        GameController gameController = new GameController(this, new GameStatus());
+        GameController gameController = new GameController(this);
         gameController.handleGame();
     }
 

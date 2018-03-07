@@ -4,12 +4,16 @@ public class Racket {
 
     private int xPos;
     private int yPos;
-    private int height;
-    private int width;
+    private final int height = 100;
+    private final int width = 15;
 
     public Racket() {
-        this.height = 100;
-        this.width = 15;
+    }
+
+    public Racket(int xPos, int yPos) {
+        this();
+        setxPos(xPos);
+        setyPos(yPos);
     }
 
     public int getxPos() {

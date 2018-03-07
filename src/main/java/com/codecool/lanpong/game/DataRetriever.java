@@ -1,5 +1,6 @@
 package com.codecool.lanpong.game;
 
+import com.codecool.lanpong.lanlayer.PlayerController;
 import com.codecool.lanpong.models.GameStatus;
 import com.codecool.lanpong.view.WindowDisplay;
 
@@ -28,4 +29,7 @@ public final class DataRetriever {
     public static GameStatus getGameStatus() {
         return GameController.getGameStatus();
     }
+
+    public static PlayerController getPlayer() {
+        return GameController.getGameOwner();}
 }

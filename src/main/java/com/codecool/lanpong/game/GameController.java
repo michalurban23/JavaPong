@@ -9,14 +9,14 @@ import java.io.IOException;
 public class GameController {
 
     private static GameStatus gameStatus;
-    private PlayerController playerController;
+    private static PlayerController playerController;
     private DataReadWriteController dataController;
     private boolean gameRunning;
+    private final long gameSpeed = 500;
 
-    public GameController(PlayerController playerController, GameStatus gs) {
+    public GameController(PlayerController pc) {
 
-        this.playerController = playerController;
-        gameStatus = gs;
+        playerController = pc;
     }
 
     public void handleGame() throws IOException {
@@ -30,6 +30,10 @@ public class GameController {
 
     private void createGame() throws IOException {
 
+        if (gameStatus == null) {
+            createStartingState();
+        }
+
         dataController = new DataReadWriteController(playerController.getSocket());
         dataController.setup();
         gameRunning = true;
@@ -42,10 +46,20 @@ public class GameController {
 
     }
 
+    private static void createStartingState() {
+
+        gameStatus = new GameStatus();
+        gameStatus.setBallDirection(true);
+        gameStatus.setBallX(400);
+        gameStatus.setBallY(300);
+        gameStatus.setServerRacketPos(300);
+        gameStatus.setClientRacketPos(300);
+    }
+
     private void updateGameStatus() throws IOException {
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(gameSpeed);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -72,6 +86,13 @@ public class GameController {
 
     public static GameStatus getGameStatus() {
 
+        if (gameStatus == null) {
+            createStartingState();
+        }
         return gameStatus;
+    }
+
+    public static PlayerController getGameOwner() {
+        return playerController;
     }
 }

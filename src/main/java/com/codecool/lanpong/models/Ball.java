@@ -2,12 +2,18 @@ package com.codecool.lanpong.models;
 
 public class Ball {
 
-    private double radius;
+    private final double radius = 15;
     private int xPos;
     private int yPos;
     private boolean goesRight;
 
     public Ball() {
+    }
+
+    public Ball(int xPos, int yPos) {
+
+        this.xPos = xPos;
+        this.yPos = yPos;
     }
 
     public int getxPos() {
