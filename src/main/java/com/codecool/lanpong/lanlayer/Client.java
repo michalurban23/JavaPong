@@ -31,9 +31,10 @@ public class Client implements PlayerController {
 
     private void run() throws InterruptedException {
 
-        while (true) {
-            Thread.sleep(100);
-            break;
+        int i = 0;
+        while (i < 10) {
+            Thread.sleep(1001);
+            i++;
         }
     }
 
