@@ -140,8 +140,21 @@ public class GameController {
     }
 
     private boolean checkRacketCollisions() {
+        boolean collides = false;
+        double[] clientRacketRange = getClientRacketRange();
+        double[] serverRacketRange = getServerRacketRange();
 
-        return gameStatus.getBallX() < 0 || gameStatus.getBallX() > BOARD_WIDTH - BALL_RADIUS;
+        if (clientRacketRange[0] <= gameStatus.getBallY() &&
+                clientRacketRange[1] >= gameStatus.getBallY() &&
+                gameStatus.getBallX() >= BOARD_WIDTH - 15 - BALL_RADIUS)
+            collides = true;
+
+        if (serverRacketRange[0] <= gameStatus.getBallY() &&
+                serverRacketRange[1] >= gameStatus.getBallY() &&
+                gameStatus.getBallX() <= 15 + BALL_RADIUS)
+            collides = true;
+
+        return collides;
     }
 
     private boolean checkBorderCollisions() {
@@ -183,5 +196,23 @@ public class GameController {
     public static double getBallRadius() {
 
         return BALL_RADIUS;
+    }
+
+    private double[] getClientRacketRange() {
+        if (gameStatus.getClientRacketPos() == 0)
+            return new double[]{0, 100};
+        else if (gameStatus.getClientRacketPos() == BOARD_HEIGHT)
+            return new double[]{0, 100};
+        else
+            return new double[]{gameStatus.getClientRacketPos()-50, gameStatus.getClientRacketPos()+50};
+    }
+
+    private double[] getServerRacketRange() {
+        if (gameStatus.getServerRacketPos() == 0)
+            return new double[]{0, 100};
+        else if (gameStatus.getServerRacketPos() == BOARD_HEIGHT)
+            return new double[]{300, 400};
+        else
+            return new double[]{gameStatus.getServerRacketPos()-50, gameStatus.getServerRacketPos()+50};
     }
 }
