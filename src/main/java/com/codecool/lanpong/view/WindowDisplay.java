@@ -36,9 +36,8 @@ public class WindowDisplay extends Application implements Display {
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(board.getMaxWidth(), board.getMaxHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
-         Timeline tl = new Timeline(new KeyFrame(Duration.millis(1), e -> run(gc)));
-//        Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
-//        Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
+        Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));
+        // Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
         tl.setCycleCount(Timeline.INDEFINITE);
         setInitialPositions();
         determineRacket(canvas);
@@ -64,16 +63,16 @@ public class WindowDisplay extends Application implements Display {
         refreshGC(gc);
         updateGameStatus();
         moveObjects(gc);
-        System.out.println(gameStatus);
+        // System.out.println(gameStatus);
         // System.out.println("Actual positions: " + gameStatus);
     }
 
     private void determineRacket(Canvas canvas) {
 
         if (DataRetriever.getPlayer() instanceof Server) {
-            canvas.setOnMouseMoved(e -> board.getRacket1().setyPos((int) e.getY()));
+            canvas.setOnMouseMoved(e -> board.getRacket1().setyPos(e.getY()));
         } else {
-            canvas.setOnMouseMoved(e -> board.getRacket2().setyPos((int) e.getY()));
+            canvas.setOnMouseMoved(e -> board.getRacket2().setyPos(e.getY()));
         }
     }
 
@@ -118,19 +117,19 @@ public class WindowDisplay extends Application implements Display {
         }
     }
 
-    public static int getBallXPos() {
+    public static double getBallXPos() {
         return board.getBall().getxPos();
     }
 
-    public static int getBallYPos() {
+    public static double getBallYPos() {
         return board.getBall().getyPos();
     }
 
-    public static int getRacket1YPos() {
+    public static double getRacket1YPos() {
         return board.getRacket1().getyPos();
     }
 
-    public static int getRacket2YPos() {
+    public static double getRacket2YPos() {
         return board.getRacket2().getyPos();
     }
 }

@@ -6,19 +6,19 @@ import com.codecool.lanpong.view.WindowDisplay;
 
 public final class DataRetriever {
 
-    public static int getBallXPos() {
+    public static double getBallXPos() {
         return WindowDisplay.getBallXPos();
     }
 
-    public static int getBallYPos() {
+    public static double getBallYPos() {
         return WindowDisplay.getBallYPos();
     }
 
-    public static int getRacket1YPos() {
+    public static double getRacket1YPos() {
         return WindowDisplay.getRacket1YPos();
     }
 
-    public static int getRacket2YPos() {
+    public static double getRacket2YPos() {
         return WindowDisplay.getRacket2YPos();
     }
 
