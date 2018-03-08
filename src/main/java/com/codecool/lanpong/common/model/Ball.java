@@ -1,4 +1,4 @@
-package com.codecool.lanpong.models;
+package com.codecool.lanpong.common.model;
 
 public class Ball {
 
