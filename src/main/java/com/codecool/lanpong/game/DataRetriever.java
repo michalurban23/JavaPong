@@ -26,6 +26,10 @@ public final class DataRetriever {
         return GameController.getGameStatus();
     }
 
+    public static String getUserName() {
+        return GameController.getGameOwner().getUserName();
+    }
+
     public static PlayerController getPlayer() {
         return GameController.getGameOwner();}
 }

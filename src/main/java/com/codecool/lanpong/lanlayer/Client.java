@@ -44,4 +44,9 @@ public class Client implements PlayerController {
 
         return socket;
     }
+
+    @Override
+    public String getUserName() {
+        return userName;
+    }
 }

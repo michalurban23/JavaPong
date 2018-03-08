@@ -5,6 +5,8 @@ import java.net.Socket;
 
 public interface PlayerController {
 
+    public String getUserName();
+
     void start() throws IOException;
     Socket getSocket();
 }

@@ -4,12 +4,15 @@ import com.codecool.lanpong.lanlayer.DataReadWriteController;
 import com.codecool.lanpong.lanlayer.PlayerController;
 import com.codecool.lanpong.lanlayer.Server;
 import com.codecool.lanpong.models.GameStatus;
+import com.codecool.lanpong.models.Racket;
 
 import java.io.IOException;
 
 public class GameController {
 
     private static GameStatus gameStatus;
+    private static int player1Score;
+    private static int player2Score;
     private static PlayerController playerController;
     private DataReadWriteController dataController;
     private boolean gameRunning;
@@ -90,6 +93,10 @@ public class GameController {
         boolean hitBorder = checkBorderCollisions();
         boolean hitRacket = checkRacketCollisions();
 
+        // Check if a player has scored:
+        boolean player1Scored = checkIfPlayer1Scored();
+        boolean player2Scored = checkIfPlayer2Scored();
+
         // Determine ball direction:
         if (hitBorder) {
             gameStatus.setBallAngle(360 - gameStatus.getBallAngle());
@@ -145,6 +152,23 @@ public class GameController {
             collides = true;
 
         return collides;
+    }
+
+    private boolean checkIfPlayer1Scored() {
+
+        if (gameStatus.getBallX() >= BOARD_WIDTH - (BALL_RADIUS / 2)) {
+            player1Score += 1;
+        }
+
+        return gameStatus.getBallX() >= BOARD_WIDTH - (BALL_RADIUS / 2);
+    }
+
+    private boolean checkIfPlayer2Scored() {
+        if (gameStatus.getBallX() <= BALL_RADIUS / 2) {
+            player2Score += 1;
+        }
+
+        return gameStatus.getBallX() <= BALL_RADIUS / 2;
     }
 
     private boolean checkBorderCollisions() {
@@ -204,5 +228,13 @@ public class GameController {
             return new int[]{300, 400};
         else
             return new int[]{gameStatus.getServerRacketPos()-50, gameStatus.getServerRacketPos()+50};
+    }
+
+    public static int getPlayer1Score() {
+        return player1Score;
+    }
+
+    public static int getPlayer2Score() {
+        return player2Score;
     }
 }
