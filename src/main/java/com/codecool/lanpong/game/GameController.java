@@ -20,8 +20,8 @@ public class GameController {
     private long timer = 0l;
 
     private static final long GAME_SPEED = 10;
-    private static final int BOARD_WIDTH = 1000;
-    private static final int BOARD_HEIGHT = 60;
+    private static final int BOARD_WIDTH = 900;
+    private static final int BOARD_HEIGHT = 600;
     private static final double BALL_RADIUS = 15d;
 
     public GameController(PlayerController pc) {
@@ -41,11 +41,18 @@ public class GameController {
 
     private void runMatch() throws IOException {
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         while (matchRunning) {
             updateGameStatus();
             checkMatchEnd();
         }
         resetGameState();
+        matchRunning = true;
     }
 
     private void resetGameState() {
@@ -103,9 +110,15 @@ public class GameController {
 
     private void checkMatchEnd() {
 
+        System.out.println(gameStatus);
         if (gameStatus.getBallX() < -BALL_RADIUS || gameStatus.getBallX() > BOARD_WIDTH + BALL_RADIUS) {
             updateScore();
             matchRunning = false;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
