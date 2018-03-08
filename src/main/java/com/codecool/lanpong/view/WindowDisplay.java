@@ -13,16 +13,24 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
+
 public class WindowDisplay extends Application implements Display {
 
     private static Board board = new Board(GameController.getBoardWidth(), GameController.getBoardHeight());
+    private Scene scene;
+    private BorderPane borderPane;
+    private HBox statusBar;
     private GameStatus gameStatus;
 
     public void start(Stage stage) throws Exception {
@@ -34,9 +42,20 @@ public class WindowDisplay extends Application implements Display {
         setInitialPositions();
         determineRacket(canvas);
         // canvas.setOnMouseClicked(e -> gameStarted = true);
-        stage.setScene(new Scene(new StackPane(canvas)));
+        borderPane = new BorderPane();
+        borderPane.setCenter(canvas);
+        setupStatusBar();
+        borderPane.setBottom(statusBar);
+        scene = new Scene(borderPane);
+        stage.setScene(scene);
         stage.show();
         tl.play();
+    }
+
+    private void setupStatusBar() {
+        statusBar = new HBox(100);
+        Text name1 = new Text(DataRetriever.getUserName());
+        statusBar.getChildren().add(name1);
     }
 
     private void run(GraphicsContext gc) {

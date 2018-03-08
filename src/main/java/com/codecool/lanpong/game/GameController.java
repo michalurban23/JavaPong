@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GameController {
 
-    private static volatile GameStatus gameStatus;
+    private static GameStatus gameStatus;
     private static PlayerController playerController;
     private DataReadWriteController dataController;
     private boolean gameRunning;
@@ -64,6 +64,14 @@ public class GameController {
         gameStatus.setClientRacketPos(BOARD_HEIGHT / 2);
 
         timer = 0l;
+        gameStatus.setClientGameEnded(false);
+        gameStatus.setServerGameEnded(false);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createGame() throws IOException {
@@ -110,15 +118,17 @@ public class GameController {
 
     private void checkMatchEnd() {
 
-        System.out.println(gameStatus);
         if (gameStatus.getBallX() < -BALL_RADIUS || gameStatus.getBallX() > BOARD_WIDTH + BALL_RADIUS) {
+            if (playerController instanceof Server) {
+                gameStatus.setServerGameEnded(true);
+            } else {
+                gameStatus.setClientGameEnded(true);
+            }
+        }
+
+        if (gameStatus.isClientGameEnded() && gameStatus.isServerGameEnded()) {
             updateScore();
             matchRunning = false;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -257,20 +267,20 @@ public class GameController {
     }
 
     private double[] getClientRacketRange() {
-        // if (gameStatus.getClientRacketPos() == 0)
-        //     return new double[]{0, 100};
-        // else if (gameStatus.getClientRacketPos() == BOARD_HEIGHT)
-        //     return new double[]{0, 100};
-        // else
+        if (gameStatus.getClientRacketPos() == 0)
+            return new double[]{0, 100};
+        else if (gameStatus.getClientRacketPos() == BOARD_HEIGHT)
+            return new double[]{0, 100};
+        else
             return new double[]{gameStatus.getClientRacketPos()-50, gameStatus.getClientRacketPos()+50};
     }
 
     private double[] getServerRacketRange() {
-        // if (gameStatus.getServerRacketPos() == 0)
-        //     return new double[]{0, 100};
-        // else if (gameStatus.getServerRacketPos() == BOARD_HEIGHT)
-        //     return new double[]{300, 400};
-        // else
+        if (gameStatus.getServerRacketPos() == 0)
+            return new double[]{0, 100};
+        else if (gameStatus.getServerRacketPos() == BOARD_HEIGHT)
+            return new double[]{300, 400};
+        else
             return new double[]{gameStatus.getServerRacketPos()-50, gameStatus.getServerRacketPos()+50};
     }
 }

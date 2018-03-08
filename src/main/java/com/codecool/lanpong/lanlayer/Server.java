@@ -48,4 +48,9 @@ public class Server implements PlayerController {
 
         return clientSocket;
     }
+
+    @Override
+    public String getUserName() {
+        return userName;
+    }
 }

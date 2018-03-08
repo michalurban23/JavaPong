@@ -50,4 +50,8 @@ public class PlayerControllerFactoryImpl implements PlayerControllerFactory {
                 throw new IllegalArgumentException();
         }
     }
+
+    public String getUserName() {
+        return userName;
+    }
 }
