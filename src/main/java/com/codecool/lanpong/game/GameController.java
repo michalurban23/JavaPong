@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GameController {
 
-    private static GameStatus gameStatus;
+    private static volatile GameStatus gameStatus;
     private static PlayerController playerController;
     private DataReadWriteController dataController;
     private boolean gameRunning;

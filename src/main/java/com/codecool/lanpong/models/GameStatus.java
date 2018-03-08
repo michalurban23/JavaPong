@@ -9,6 +9,9 @@ public class GameStatus implements Serializable {
     private double ballAngle;
     private double serverRacketPos;
     private double clientRacketPos;
+    private boolean serverGameEnded;
+    private boolean clientGameEnded;
+    private int[] score;
 
     public double getBallX() {
 
@@ -61,6 +64,36 @@ public class GameStatus implements Serializable {
     public void setClientRacketPos(double clientRacketPos) {
 
         this.clientRacketPos = clientRacketPos;
+    }
+
+    public boolean isServerGameEnded() {
+
+        return serverGameEnded;
+    }
+
+    public void setServerGameEnded(boolean serverGameEnded) {
+
+        this.serverGameEnded = serverGameEnded;
+    }
+
+    public boolean isClientGameEnded() {
+
+        return clientGameEnded;
+    }
+
+    public void setClientGameEnded(boolean clientGameEnded) {
+
+        this.clientGameEnded = clientGameEnded;
+    }
+
+    public int[] getScore() {
+
+        return score;
+    }
+
+    public void setScore(int[] score) {
+
+        this.score = score;
     }
 
     @Override
