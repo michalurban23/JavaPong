@@ -28,8 +28,9 @@ public class WindowDisplay extends Application implements Display {
     public void start(Stage stage) throws Exception {
         Canvas canvas = new Canvas(board.getMaxWidth(), board.getMaxHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        // Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));
-        Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
+         Timeline tl = new Timeline(new KeyFrame(Duration.millis(1), e -> run(gc)));
+//        Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
+//        Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
         tl.setCycleCount(Timeline.INDEFINITE);
         setInitialPositions();
         determineRacket(canvas);
