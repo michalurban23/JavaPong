@@ -4,28 +4,28 @@ import java.io.Serializable;
 
 public class GameStatus implements Serializable {
 
-    private int ballX;
-    private int ballY;
+    private double ballX;
+    private double ballY;
     private double ballAngle;
-    private int serverRacketPos;
-    private int clientRacketPos;
+    private double serverRacketPos;
+    private double clientRacketPos;
 
-    public int getBallX() {
+    public double getBallX() {
 
         return ballX;
     }
 
-    public void setBallX(int ballX) {
+    public void setBallX(double ballX) {
 
         this.ballX = ballX;
     }
 
-    public int getBallY() {
+    public double getBallY() {
 
         return ballY;
     }
 
-    public void setBallY(int ballY) {
+    public void setBallY(double ballY) {
 
         this.ballY = ballY;
     }
@@ -37,25 +37,28 @@ public class GameStatus implements Serializable {
 
     public void setBallAngle(double ballAngle) {
 
-        this.ballAngle = ballAngle % 360;
+        if (ballAngle >= 360) {
+            this.ballAngle = ballAngle - 360;
+        } else
+            this.ballAngle = ballAngle;
     }
 
-    public int getServerRacketPos() {
+    public double getServerRacketPos() {
 
         return serverRacketPos;
     }
 
-    public void setServerRacketPos(int serverRacketPos) {
+    public void setServerRacketPos(double serverRacketPos) {
 
         this.serverRacketPos = serverRacketPos;
     }
 
-    public int getClientRacketPos() {
+    public double getClientRacketPos() {
 
         return clientRacketPos;
     }
 
-    public void setClientRacketPos(int clientRacketPos) {
+    public void setClientRacketPos(double clientRacketPos) {
 
         this.clientRacketPos = clientRacketPos;
     }

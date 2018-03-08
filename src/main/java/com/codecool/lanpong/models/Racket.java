@@ -2,33 +2,33 @@ package com.codecool.lanpong.models;
 
 public class Racket {
 
-    private int xPos;
-    private int yPos;
+    private double xPos;
+    private double yPos;
     private final int height = 100;
     private final int width = 15;
 
     public Racket() {
     }
 
-    public Racket(int xPos, int yPos) {
+    public Racket(double xPos, double yPos) {
         this();
         setxPos(xPos);
         setyPos(yPos);
     }
 
-    public int getxPos() {
+    public double getxPos() {
         return xPos;
     }
 
-    public void setxPos(int xPos) {
+    public void setxPos(double xPos) {
         this.xPos = xPos;
     }
 
-    public int getyPos() {
+    public double getyPos() {
         return yPos;
     }
 
-    public void setyPos(int yPos) {
+    public void setyPos(double yPos) {
         this.yPos = yPos;
     }
 
