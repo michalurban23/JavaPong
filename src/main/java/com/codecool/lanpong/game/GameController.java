@@ -218,6 +218,16 @@ public class GameController {
                 gameStatus.getBallX() <= 15 + BALL_RADIUS)
             collides = true;
 
+        if (serverRacketRange[0] <= gameStatus.getBallY() &&
+                serverRacketRange[1] >= gameStatus.getBallY() &&
+                gameStatus.getBallX() >= BOARD_WIDTH - 15 - BALL_RADIUS)
+            collides = true;
+
+        if (clientRacketRange[0] <= gameStatus.getBallY() &&
+                clientRacketRange[1] >= gameStatus.getBallY() &&
+                gameStatus.getBallX() <= 15 + BALL_RADIUS)
+            collides = true;
+
         return collides;
     }
 
