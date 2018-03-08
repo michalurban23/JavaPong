@@ -54,10 +54,6 @@ public class WindowDisplay extends Application implements Display {
         // Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
         tl.setCycleCount(Timeline.INDEFINITE);
 
-        while (!GameController.bothClientsConnected) {
-            Thread.sleep(1000);
-        }
-
         setInitialPositions();
         determineRacket(canvas);
         // canvas.setOnMouseClicked(e -> gameStarted = true);
@@ -107,11 +103,9 @@ public class WindowDisplay extends Application implements Display {
 
     private void setInitialPositions() {
 
-        try {
-            gameStatus = dataController.readData();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        GameController.createStartingState();
+        gameStatus = GameController.getGameStatus();
+
         board.setRacket1(new Racket(0, gameStatus.getPlayer1RacketPos()));
         board.setRacket2(new Racket(board.getMaxWidth()-board.getRacket1().getWidth(),
                 gameStatus.getPlayer2RacketPos()));

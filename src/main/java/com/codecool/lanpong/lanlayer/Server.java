@@ -28,11 +28,14 @@ public class Server {
 
     public void start() throws IOException {
 
+        GameController.createStartingState();
+
         serverSocket = new ServerSocket(port);
         System.out.println("Waiting for connection on port :: " + port);
 
         clientSocket1 = serverSocket.accept();
         player1ioController = new DataReadWriteController(clientSocket1);
+        player1ioController.setGameStatus(GameController.getGameStatus());
         Thread player1 = new Thread(player1ioController);
         player1.start();
         System.out.println("Connection from :: " + clientSocket1.getInetAddress());
@@ -47,6 +50,5 @@ public class Server {
         gameController.setup(player1ioController, player2ioController);
         gameController.handleGame();
 
-        GameController.bothClientsConnected = true;
     }
 }

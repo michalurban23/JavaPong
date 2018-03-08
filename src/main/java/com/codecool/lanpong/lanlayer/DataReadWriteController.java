@@ -94,10 +94,9 @@ public class DataReadWriteController implements Runnable {
 
         while (true) {
             try {
-                Thread.sleep(100);
                 sendData();
                 readData();
-            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

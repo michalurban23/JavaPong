@@ -16,7 +16,6 @@ public class GameController {
     private static int[] score;
     private Random random = new Random();
     private long timer = 0l;
-    public static boolean bothClientsConnected;
 
     private static final long GAME_SPEED = 10;
     private static final int BOARD_WIDTH = 900;
@@ -101,7 +100,7 @@ public class GameController {
         matchRunning = true;
     }
 
-    private static void createStartingState() {
+    public static void createStartingState() {
 
         gameStatus = new GameStatus();
         gameStatus.setBallAngle((new Random()).nextBoolean() ? 0d : 180d);  // Either goes left or right
