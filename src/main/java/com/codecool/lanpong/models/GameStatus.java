@@ -7,11 +7,42 @@ public class GameStatus implements Serializable {
     private double ballX;
     private double ballY;
     private double ballAngle;
-    private double serverRacketPos;
-    private double clientRacketPos;
-    private boolean serverGameEnded;
-    private boolean clientGameEnded;
+    private double player1RacketPos;
+    private double player2RacketPos;
     private int[] score;
+    private String player1Name;
+    private String player2Name;
+    private boolean bothPlayersConnected;
+
+    public boolean isBothPlayersConnected() {
+
+        return bothPlayersConnected;
+    }
+
+    public void setBothPlayersConnected(boolean bothPlayersConnected) {
+
+        this.bothPlayersConnected = bothPlayersConnected;
+    }
+
+    public String getPlayer1Name() {
+
+        return player1Name;
+    }
+
+    public void setPlayer1Name(String player1Name) {
+
+        this.player1Name = player1Name;
+    }
+
+    public String getPlayer2Name() {
+
+        return player2Name;
+    }
+
+    public void setPlayer2Name(String player2Name) {
+
+        this.player2Name = player2Name;
+    }
 
     public double getBallX() {
 
@@ -46,44 +77,24 @@ public class GameStatus implements Serializable {
             this.ballAngle = ballAngle;
     }
 
-    public double getServerRacketPos() {
+    public double getPlayer1RacketPos() {
 
-        return serverRacketPos;
+        return player1RacketPos;
     }
 
-    public void setServerRacketPos(double serverRacketPos) {
+    public void setPlayer1RacketPos(double player1RacketPos) {
 
-        this.serverRacketPos = serverRacketPos;
+        this.player1RacketPos = player1RacketPos;
     }
 
-    public double getClientRacketPos() {
+    public double getPlayer2RacketPos() {
 
-        return clientRacketPos;
+        return player2RacketPos;
     }
 
-    public void setClientRacketPos(double clientRacketPos) {
+    public void setPlayer2RacketPos(double player2RacketPos) {
 
-        this.clientRacketPos = clientRacketPos;
-    }
-
-    public boolean isServerGameEnded() {
-
-        return serverGameEnded;
-    }
-
-    public void setServerGameEnded(boolean serverGameEnded) {
-
-        this.serverGameEnded = serverGameEnded;
-    }
-
-    public boolean isClientGameEnded() {
-
-        return clientGameEnded;
-    }
-
-    public void setClientGameEnded(boolean clientGameEnded) {
-
-        this.clientGameEnded = clientGameEnded;
+        this.player2RacketPos = player2RacketPos;
     }
 
     public int[] getScore() {
@@ -102,7 +113,7 @@ public class GameStatus implements Serializable {
         return "ballAngle: " + this.ballAngle + ", " +
                 "ballX: " + this.ballX + ", " +
                 "ballY: " + this.ballY + ", " +
-                "serverRacket: " + this.serverRacketPos + ", " +
-                "clientRacket: " + this.clientRacketPos;
+                "player1Racket: " + this.player1RacketPos + ", " +
+                "player2Racket: " + this.player2RacketPos;
     }
 }

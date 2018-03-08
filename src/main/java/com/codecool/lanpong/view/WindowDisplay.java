@@ -1,8 +1,7 @@
 package com.codecool.lanpong.view;
 
-import com.codecool.lanpong.game.DataRetriever;
 import com.codecool.lanpong.game.GameController;
-import com.codecool.lanpong.lanlayer.Server;
+import com.codecool.lanpong.lanlayer.DataReadWriteController;
 import com.codecool.lanpong.models.Ball;
 import com.codecool.lanpong.models.Board;
 import com.codecool.lanpong.models.GameStatus;
@@ -15,15 +14,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
+import java.io.IOException;
+import java.net.Socket;
 
 public class WindowDisplay extends Application implements Display {
 
@@ -32,13 +30,34 @@ public class WindowDisplay extends Application implements Display {
     private BorderPane borderPane;
     private HBox statusBar;
     private GameStatus gameStatus;
+    private DataReadWriteController dataController;
+    private String name;
+    private int index;
+
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 
     public void start(Stage stage) throws Exception {
+
+        WindowDisplay.Parameters parameters = getParameters();
+        System.out.println(parameters.getRaw());
+
+        dataController = new DataReadWriteController(new Socket(parameters.getRaw().get(0),
+                Integer.parseInt(parameters.getRaw().get(1))));
+        name = parameters.getRaw().get(2);
+        index = Integer.parseInt(parameters.getRaw().get(3));
+
         Canvas canvas = new Canvas(board.getMaxWidth(), board.getMaxHeight());
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc)));
         // Timeline tl = new Timeline(new KeyFrame(Duration.millis(GameController.getGameSpeed()), e -> run(gc)));
         tl.setCycleCount(Timeline.INDEFINITE);
+
+        while (!GameController.bothClientsConnected) {
+            Thread.sleep(1000);
+        }
+
         setInitialPositions();
         determineRacket(canvas);
         // canvas.setOnMouseClicked(e -> gameStarted = true);
@@ -54,7 +73,7 @@ public class WindowDisplay extends Application implements Display {
 
     private void setupStatusBar() {
         statusBar = new HBox(100);
-        Text name1 = new Text(DataRetriever.getUserName());
+        Text name1 = new Text(gameStatus.getPlayer1Name() + "   " + gameStatus.getPlayer2Name());
         statusBar.getChildren().add(name1);
     }
 
@@ -69,7 +88,7 @@ public class WindowDisplay extends Application implements Display {
 
     private void determineRacket(Canvas canvas) {
 
-        if (DataRetriever.getPlayer() instanceof Server) {
+        if (index == 1) {
             canvas.setOnMouseMoved(e -> board.getRacket1().setyPos(e.getY()));
         } else {
             canvas.setOnMouseMoved(e -> board.getRacket2().setyPos(e.getY()));
@@ -88,11 +107,14 @@ public class WindowDisplay extends Application implements Display {
 
     private void setInitialPositions() {
 
-        gameStatus = DataRetriever.getGameStatus();
-
-        board.setRacket1(new Racket(0, gameStatus.getServerRacketPos()));
+        try {
+            gameStatus = dataController.readData();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        board.setRacket1(new Racket(0, gameStatus.getPlayer1RacketPos()));
         board.setRacket2(new Racket(board.getMaxWidth()-board.getRacket1().getWidth(),
-                gameStatus.getClientRacketPos()));
+                gameStatus.getPlayer2RacketPos()));
         board.setBall(new Ball(gameStatus.getBallX(), gameStatus.getBallY(), GameController.getBallRadius()));
     }
 
@@ -105,15 +127,19 @@ public class WindowDisplay extends Application implements Display {
 
     private void updateGameStatus() {
 
-        gameStatus = DataRetriever.getGameStatus();
+        try {
+            gameStatus = dataController.readData();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         // Update ball
         board.getBall().setxPos(gameStatus.getBallX());
         board.getBall().setyPos(gameStatus.getBallY());
         // Update rackets
-        if (DataRetriever.getPlayer() instanceof Server) {
-            board.getRacket2().setyPos(gameStatus.getClientRacketPos());
+        if (index == 1) {
+            board.getRacket2().setyPos(gameStatus.getPlayer2RacketPos());
         } else {
-            board.getRacket1().setyPos(gameStatus.getServerRacketPos());
+            board.getRacket1().setyPos(gameStatus.getPlayer1RacketPos());
         }
     }
 

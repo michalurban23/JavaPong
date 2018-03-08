@@ -1,56 +1,52 @@
 package com.codecool.lanpong.lanlayer;
 
 import com.codecool.lanpong.game.GameController;
-import com.codecool.lanpong.game.WindowThreadBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
-public class Server implements PlayerController {
+public class Server {
 
     private String userName;
     private InetAddress address;
     private int port;
     private ServerSocket serverSocket;
-    private Socket clientSocket;
+    private Socket clientSocket1;
+    private Socket clientSocket2;
+    private DataReadWriteController player1ioController;
+    private DataReadWriteController player2ioController;
 
-    public Server(String userName, InetAddress address, int port) {
+    public Server(int port, String userName) throws UnknownHostException {
 
         this.userName = userName;
-        this.address = address;
+        this.address = InetAddress.getLocalHost();
         this.port = port;
     }
 
-    @Override
     public void start() throws IOException {
-
-        initializeSocket();
-        GameController gameController = new GameController(this);
-        gameController.handleGame();
-    }
-
-    private void initializeSocket() throws IOException {
 
         serverSocket = new ServerSocket(port);
         System.out.println("Waiting for connection on port :: " + port);
-        clientSocket = serverSocket.accept();
-        // clientSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
 
-        Thread t = new Thread(new WindowThreadBuilder());
-        t.start();
+        clientSocket1 = serverSocket.accept();
+        player1ioController = new DataReadWriteController(clientSocket1);
+        Thread player1 = new Thread(player1ioController);
+        player1.start();
+        System.out.println("Connection from :: " + clientSocket1.getInetAddress());
 
-        System.out.println("Connection from :: " + clientSocket.getInetAddress());
-    }
+        clientSocket2 = serverSocket.accept();
+        player2ioController = new DataReadWriteController(clientSocket2);
+        Thread player2 = new Thread(player2ioController);
+        player2.start();
+        System.out.println("Connection from :: " + clientSocket2.getInetAddress());
 
-    public Socket getSocket() {
+        GameController gameController = new GameController();
+        gameController.setup(player1ioController, player2ioController);
+        gameController.handleGame();
 
-        return clientSocket;
-    }
-
-    @Override
-    public String getUserName() {
-        return userName;
+        GameController.bothClientsConnected = true;
     }
 }
