@@ -3,36 +3,17 @@ package com.codecool.lanpong.client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Scanner;
 
-//
-//import com.codecool.lanpong.common.model.GameStatus;
-//import com.codecool.lanpong.game.GameController;
-//import com.codecool.lanpong.lanlayer.DataReadWriteController;
-//import com.codecool.lanpong.models.Ball;
-//import com.codecool.lanpong.models.Racket;
-//import javafx.animation.KeyFrame;
-//import javafx.animation.Timeline;
-//import javafx.application.Application;
-//import javafx.scene.Scene;
-//import javafx.scene.canvas.Canvas;
-//import javafx.scene.canvas.GraphicsContext;
-//import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.HBox;
-//import javafx.scene.paint.Color;
-//import javafx.scene.text.Font;
-//import javafx.scene.text.Text;
-//import javafx.stage.Stage;
-//import javafx.util.Duration;
-//
-//import java.io.IOException;
-//import java.net.Socket;
-//
-public class GraphicsController extends Application {
+public class Client extends Application {
 
     private String playerName;
     private InetAddress serverAddress;
     private int serverPort;
+    private ClientDao dao;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,14 +22,26 @@ public class GraphicsController extends Application {
         connectToServer();
     }
 
-    private void setup() {
+    private void setup() throws UnknownHostException {
 
-        GraphicsController.Parameters parameters = getParameters();
-
+        Client.Parameters parameters = getParameters();
+        serverAddress = InetAddress.getByName(parameters.getRaw().get(0));
+        serverPort = Integer.parseInt(parameters.getRaw().get(1));
+        askForName();
     }
 
-    private void connectToServer() {
+    private void askForName() {
 
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What's your name?");
+        playerName = sc.nextLine();
+        sc.close();
+    }
+
+    private void connectToServer() throws IOException {
+
+        dao = new ClientDao(playerName);
+        dao.setup(serverAddress, serverPort);
     }
 //
 //    private Scene scene;
