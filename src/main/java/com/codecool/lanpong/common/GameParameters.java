@@ -1,4 +1,4 @@
-package com.codecool.lanpong.common.model;
+package com.codecool.lanpong.common;
 
 import java.util.Random;
 

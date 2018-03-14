@@ -6,11 +6,10 @@ public class ServerApp {
 
     public static void main(String[] args) {
 
-        GameController gameController = new GameController();
-        Server server = new Server(args[0]);
 
         try {
-            server.setup(gameController);
+            Server server = new Server(args[0]);
+            server.setup();
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

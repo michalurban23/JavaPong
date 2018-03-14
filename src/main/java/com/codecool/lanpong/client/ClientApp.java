@@ -5,6 +5,7 @@ import javafx.application.Application;
 public class ClientApp {
 
     public static void main(String[] args) {
-        Application.launch(GraphicsController.class, args);
+
+        Application.launch(Client.class, args);
     }
 }
