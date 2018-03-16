@@ -16,6 +16,7 @@ public class GameParameters {
     public final static double BALL_STARTING_ANGLE = calculateRandomAngle();
 
     public final static double BALL_STARTING_SPEED = 1d;
+    public final static double TIME_FACTOR = 1.2d;
 
     public final static double GAME_SPEED = 10;
     public final static long THROTTLE = 10;
