@@ -25,8 +25,8 @@ public class GameStatus implements Serializable {
 
         gameStatus.setBallXpos(GameParameters.BALL_STARTING_X);
         gameStatus.setBallYpos(GameParameters.BALL_STARTING_Y);
-        gameStatus.setPlayer1racket(0);
-        gameStatus.setPlayer2racket(GameParameters.BOARD_WIDTH - GameParameters.RACKET_WIDTH);
+        gameStatus.setPlayer1racket(GameParameters.BOARD_HEIGHT / 2);
+        gameStatus.setPlayer2racket(GameParameters.BOARD_HEIGHT / 2);
         gameStatus.setScore(new int[] {0,0});
 
         return gameStatus;

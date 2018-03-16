@@ -1,15 +1,9 @@
 package com.codecool.lanpong.server;
 
-import com.codecool.lanpong.common.GameParameters;
 import com.codecool.lanpong.common.GameStatus;
 
-//
-//import com.codecool.lanpong.common.GameStatus;
-//import com.codecool.lanpong.lanlayer.DataReadWriteController;
-//
-//import java.io.IOException;
-//import java.util.Random;
-//
+import java.util.Random;
+
 public class GameController {
 
     private GameStatus gameStatus;
@@ -21,7 +15,7 @@ public class GameController {
 
     public void analyzeGameStatus() {
 
-        // TODO
+        gameStatus.setScore(new int[]{(new Random()).nextInt(10),(new Random()).nextInt(10)});
     }
     //    private void runMatch() throws IOException {
 //

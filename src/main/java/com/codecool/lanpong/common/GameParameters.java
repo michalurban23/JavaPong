@@ -16,5 +16,6 @@ public class GameParameters {
     public final static double BALL_STARTING_ANGLE = (new Random()).nextBoolean() ? 0d : 180d;
     public final static double BALL_STARTING_SPEED = 10d;
 
-    public final static double GAME_SPEED = 10;
+    public final static double GAME_SPEED = 100;
+    public final static long THROTTLE = 10;
 }
