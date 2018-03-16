@@ -1,102 +1,34 @@
 package com.codecool.lanpong.server;
 
+import com.codecool.lanpong.common.GameParameters;
 import com.codecool.lanpong.common.GameStatus;
-
-import java.util.Random;
 
 public class GameController {
 
     private GameStatus gameStatus;
+    private long timeFactor;
+    private double ballXvelocity;
+    private double ballYvelocity;
 
     public GameController(GameStatus gameStatus) {
 
         this.gameStatus = gameStatus;
+        timeFactor = 0;
+        ballXvelocity = GameParameters.BALL_STARTING_SPEED * Math.cos(GameParameters.BALL_STARTING_ANGLE);
+        ballYvelocity = GameParameters.BALL_STARTING_SPEED * Math.sin(GameParameters.BALL_STARTING_ANGLE);
     }
 
     public void analyzeGameStatus() {
 
-        gameStatus.setScore(new int[]{(new Random()).nextInt(10),(new Random()).nextInt(10)});
+        checkEndGame();
+        updateBallPosition();
+        System.out.println(gameStatus.getBallXpos() + "  " + gameStatus.getBallYpos());
     }
-    //    private void runMatch() throws IOException {
-//
-//        // try {
-//        //     Thread.sleep(1000);
-//        // } catch (InterruptedException e) {
-//        //     e.printStackTrace();
-//        // }
-//
-//        while (matchRunning) {
-//            updateGameStatus();
-//            checkMatchEnd();
-//        }
-//        resetGameState();
-//        matchRunning = true;
-//    }
-//
-//    private void resetGameState() {
-//
-//        gameStatus.setBallAngle((new Random()).nextBoolean() ? 0d : 180d);  // Either goes left or right
-//        gameStatus.setBallX(BOARD_WIDTH / 2);
-//        gameStatus.setBallY(BOARD_HEIGHT / 2);
-//        gameStatus.setPlayer1RacketPos(BOARD_HEIGHT / 2);
-//        gameStatus.setPlayer2RacketPos(BOARD_HEIGHT / 2);
-//
-//        timer = 0l;
-//
-//        // try {
-//        //     Thread.sleep(1000);
-//        // } catch (InterruptedException e) {
-//        //     e.printStackTrace();
-//        // }
-//    }
-//
-//    private void createGame() throws IOException {
-//
-//        if (gameStatus == null) {
-//            createStartingState();
-//        }
-//
-//        gameRunning = true;
-//        score = new int[] {0,0};
-//
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        matchRunning = true;
-//    }
-//
-//    public static void createStartingState() {
-//
-//        gameStatus = new GameStatus();
-//        gameStatus.setBallAngle((new Random()).nextBoolean() ? 0d : 180d);  // Either goes left or right
-//        gameStatus.setBallX(BOARD_WIDTH / 2);
-//        gameStatus.setBallY(BOARD_HEIGHT / 2);
-//        gameStatus.setPlayer1RacketPos(BOARD_HEIGHT / 2);
-//        gameStatus.setPlayer2RacketPos(BOARD_HEIGHT / 2);
-//    }
-//
-//    private void updateGameStatus() throws IOException {
-//
-//        // try {
-//        //     Thread.sleep(GAME_SPEED * 10);
-//        // } catch (InterruptedException e) {
-//        //     e.printStackTrace();
-//        // }
-//        readStatus();
-//        updateBallPosition();
-//        sendStatus();
-//    }
-//
-//    private void checkMatchEnd() {
-//
-//        if (gameStatus.getBallX() < -BALL_RADIUS || gameStatus.getBallX() > BOARD_WIDTH + BALL_RADIUS) {
-//            updateScore();
-//            matchRunning = false;
-//        }
-//    }
+
+    private void checkEndGame() {
+
+        // TODO
+    }
 //
 //    private void updateScore() {
 //
@@ -107,45 +39,23 @@ public class GameController {
 //        }
 //    }
 //
-//    private void sendStatus() throws IOException {
-//
-//        player1dataController.setGameStatus(gameStatus);
-//        player2dataController.setGameStatus(gameStatus);
-//    }
-//
-//    private void updateBallPosition() {
-//
-//        double distance = Math.max(10d, timer++ / 10);
-//        System.out.println(distance);
-//
-//        // Check collisions:
-//        boolean hitBorder = checkBorderCollisions();
-//        boolean hitRacket = checkRacketCollisions();
-//
-//        // Determine ball direction:
-//        if (hitBorder) {
-//            gameStatus.setBallAngle(360d - gameStatus.getBallAngle());
-//            shiftBall(distance);
-//        }
-//        if (hitRacket) {
-//            if (gameStatus.getBallX() > BOARD_WIDTH / 2) {
-//                gameStatus.setBallAngle(random.nextInt(180) + 90d);
-//            } else {
-//                gameStatus.setBallAngle((random.nextInt(180) + 270d) % 360d);
-//            }
-//            shiftBall(distance);
-//        }
-//
-//        double xDistance = distance * Math.cos(Math.toRadians(gameStatus.getBallAngle()));
-//        double yDistance = distance * Math.sin(Math.toRadians(gameStatus.getBallAngle()));
-//
-//        // Move ball horizontally:
-//        gameStatus.setBallX(gameStatus.getBallX() + xDistance);
-//
-//        // Move ball vertically:
-//        gameStatus.setBallY(gameStatus.getBallY() + yDistance);
-//    }
-//
+
+    private void updateBallPosition() {
+
+        if (checkBorderCollisions()) {
+            ballYvelocity = -ballYvelocity;
+            // shiftBall(distance);
+        }
+        if (checkRacketCollisions()) {
+            ballXvelocity = -ballXvelocity;
+            // shiftBall(distance);
+        }
+
+        gameStatus.setBallXpos(gameStatus.getBallXpos() + ballXvelocity);
+        gameStatus.setBallYpos(gameStatus.getBallYpos() + ballYvelocity);
+    }
+
+    //
 //    private void shiftBall(double distance) {
 //
 //        double shift = Math.max(BALL_RADIUS, distance);
@@ -165,95 +75,14 @@ public class GameController {
 //        }
 //    }
 //
-//    private boolean checkRacketCollisions() {
-//        boolean collides = false;
-//        double[] serverRacketRange = getPlayer1RacketRange();
-//        double[] clientRacketRange = getPlayer2RacketRange();
-//
-//        if (clientRacketRange[0] <= gameStatus.getBallY() &&
-//                clientRacketRange[1] >= gameStatus.getBallY() &&
-//                gameStatus.getBallX() >= BOARD_WIDTH - 15 - BALL_RADIUS)
-//            collides = true;
-//
-//        if (serverRacketRange[0] <= gameStatus.getBallY() &&
-//                serverRacketRange[1] >= gameStatus.getBallY() &&
-//                gameStatus.getBallX() <= 15 + BALL_RADIUS)
-//            collides = true;
-//
-//        if (serverRacketRange[0] <= gameStatus.getBallY() &&
-//                serverRacketRange[1] >= gameStatus.getBallY() &&
-//                gameStatus.getBallX() >= BOARD_WIDTH - 15 - BALL_RADIUS)
-//            collides = true;
-//
-//        if (clientRacketRange[0] <= gameStatus.getBallY() &&
-//                clientRacketRange[1] >= gameStatus.getBallY() &&
-//                gameStatus.getBallX() <= 15 + BALL_RADIUS)
-//            collides = true;
-//
-//        return collides;
-//    }
-//
-//    private boolean checkBorderCollisions() {
-//
-//        return gameStatus.getBallY() < 0 || gameStatus.getBallY() > BOARD_HEIGHT - BALL_RADIUS;
-//    }
-//
-//    private void readStatus() throws IOException {
-//
-//        try {
-//            gameStatus.setPlayer1RacketPos(player1dataController.readData().getPlayer1RacketPos());
-//            gameStatus.setPlayer2RacketPos(player2dataController.readData().getPlayer2RacketPos());
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static GameStatus getGameStatus() {
-//
-//        if (gameStatus == null) {
-//            createStartingState();
-//        }
-//        return gameStatus;
-//    }
-//
-//    public static int[] getScore() {
-//        return score;
-//    }
-//
-//    public static double getGameSpeed() {
-//        return GAME_SPEED;
-//    }
-//
-//    public static int getBoardWidth() {
-//
-//        return BOARD_WIDTH;
-//    }
-//
-//    public static int getBoardHeight() {
-//
-//        return BOARD_HEIGHT;
-//    }
-//
-//    public static double getBallRadius() {
-//
-//        return BALL_RADIUS;
-//    }
-//
-//    private double[] getPlayer1RacketRange() {
-//        if (gameStatus.getPlayer1RacketPos() == 0)
-//            return new double[]{0, 100};
-//        else if (gameStatus.getPlayer1RacketPos() == BOARD_HEIGHT)
-//            return new double[]{BOARD_HEIGHT-100, BOARD_HEIGHT};
-//        else
-//            return new double[]{gameStatus.getPlayer1RacketPos()-50, gameStatus.getPlayer1RacketPos()+50};
-//    }
-//
-//    private double[] getPlayer2RacketRange() {
-//        if (gameStatus.getPlayer2RacketPos() == 0)
-//            return new double[]{0, 100};
-//        else if (gameStatus.getPlayer2RacketPos() == BOARD_HEIGHT)
-//            return new double[]{BOARD_HEIGHT-100, BOARD_HEIGHT};
-//        else
-//            return new double[]{gameStatus.getPlayer2RacketPos()-50, gameStatus.getPlayer2RacketPos()+50};
-//    }
+    private boolean checkRacketCollisions() {
+
+        return gameStatus.getBallXpos() < GameParameters.RACKET_WIDTH ||
+                gameStatus.getBallXpos() > GameParameters.BOARD_WIDTH - GameParameters.RACKET_WIDTH;
+    }
+
+    private boolean checkBorderCollisions() {
+
+        return gameStatus.getBallYpos() < 0 || gameStatus.getBallYpos() > GameParameters.BOARD_HEIGHT;
+    }
 }

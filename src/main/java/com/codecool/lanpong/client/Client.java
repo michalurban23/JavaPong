@@ -38,7 +38,8 @@ public class Client extends Application {
 
         setup();
         connectToServer();
-        runGUI();
+        waitForSecondPlayer();
+        runGUI(primaryStage);
     }
 
     private void setup() throws UnknownHostException {
@@ -67,7 +68,7 @@ public class Client extends Application {
         t.start();
     }
 
-    private void runGUI() {
+    private void runGUI(Stage stage) {
 
         Canvas canvas = new Canvas(GameParameters.BOARD_WIDTH, GameParameters.BOARD_HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -89,7 +90,7 @@ public class Client extends Application {
     private void setupStatusBar() {
 
         statusBar = new HBox(100);
-        Text name1 = new Text(gameStatus.getPlayer1Name() + "   " + gameStatus.getPlayer2Name());
+        Text name1 = new Text(gameStatus.getPlayer1Name() + " vs. " + gameStatus.getPlayer2Name());
         statusBar.getChildren().add(name1);
     }
 
@@ -122,12 +123,35 @@ public class Client extends Application {
     private void refreshGC(GraphicsContext gc) {
 
         gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, GameParameters.BOARD_HEIGHT, GameParameters.BOARD_WIDTH);
+        gc.fillRect(0, 0, GameParameters.BOARD_WIDTH, GameParameters.BOARD_HEIGHT);
         gc.setFill(Color.WHITE);
         gc.setFont(Font.font(25));
     }
 
     private void updateGameStatus() {
 
+        double myPosition;
+
+        if (gameStatus.getPlayer1Name().equals(playerName)) {
+            myPosition = gameStatus.getPlayer1racket();
+            gameStatus = dao.getGameStatus();
+            gameStatus.setPlayer1racket(myPosition);
+        } else {
+            myPosition = gameStatus.getPlayer2racket();
+            gameStatus = dao.getGameStatus();
+            gameStatus.setPlayer2racket(myPosition);
+        }
+    }
+
+    private void waitForSecondPlayer() {
+
+        while (gameStatus == null) {
+            try {
+                Thread.sleep(10* GameParameters.THROTTLE);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            gameStatus = dao.getGameStatus();
+        }
     }
 }

@@ -73,10 +73,26 @@ public class ClientDao implements Runnable {
         ois = new ObjectInputStream(is);
 
         try {
-            gameStatus = (GameStatus) ois.readObject();
+            GameStatus serverGameStatus = (GameStatus) ois.readObject();
+            processStatus(serverGameStatus);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void processStatus(GameStatus serverGameStatus) {
+
+        if (gameStatus == null) {
+            gameStatus = serverGameStatus;
+        }
+
+        if (serverGameStatus.getPlayer1Name().equals(playerName)) {
+            gameStatus.setPlayer2racket(serverGameStatus.getPlayer2racket());
+        } else {
+            gameStatus.setPlayer1racket(serverGameStatus.getPlayer1racket());
+        }
+        gameStatus.setBallXpos(serverGameStatus.getBallXpos());
+        gameStatus.setBallYpos(serverGameStatus.getBallYpos());
     }
 
     public GameStatus getGameStatus() {
