@@ -24,7 +24,7 @@ public class GameParameters {
     private static double calculateRandomAngle() {
 
         Random rand = new Random();
-        double angle = 90 + 180*rand.nextInt(1) + rand.nextInt(90);
+        double angle = 180*rand.nextInt(2) - 45 + rand.nextInt(90);
 
         return 2 * Math.PI * angle/360;
     }

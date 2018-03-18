@@ -3,6 +3,8 @@ package com.codecool.lanpong.server;
 import com.codecool.lanpong.common.GameParameters;
 import com.codecool.lanpong.common.GameStatus;
 
+import java.util.Arrays;
+
 public class GameController {
 
     private GameStatus gameStatus;
@@ -12,11 +14,13 @@ public class GameController {
     public GameController(GameStatus gameStatus) {
 
         this.gameStatus = gameStatus;
-        System.out.println(GameParameters.BALL_STARTING_ANGLE);
+        setBallStartingVelocity();
+    }
+
+    private void setBallStartingVelocity() {
+
         ballXvelocity = GameParameters.BALL_STARTING_SPEED * Math.cos(GameParameters.BALL_STARTING_ANGLE);
         ballYvelocity = GameParameters.BALL_STARTING_SPEED * Math.sin(GameParameters.BALL_STARTING_ANGLE);
-        System.out.println(ballXvelocity);
-        System.out.println(ballYvelocity);
     }
 
     public void analyzeGameStatus() {
@@ -27,7 +31,19 @@ public class GameController {
 
     private void checkEndGame() {
 
-        // TODO
+        if (gameStatus.getBallXpos() < 0 ||
+                gameStatus.getBallXpos() > GameParameters.BOARD_WIDTH + GameParameters.BALL_RADIUS) {
+            updateScore();
+            resetGame();
+        }
+    }
+
+    private void resetGame() {
+
+        System.out.println(Arrays.toString(gameStatus.getScore()));
+        setBallStartingVelocity();
+        gameStatus.setBallXpos(GameParameters.BOARD_WIDTH / 2);
+        gameStatus.setBallYpos(GameParameters.BOARD_HEIGHT / 2);
     }
 
     private void updateScore() {
@@ -48,39 +64,26 @@ public class GameController {
             // shiftBall(distance);
         }
         if (checkRacketCollisions()) {
+            System.out.println("collided");
             ballXvelocity = -ballXvelocity;
             ballXvelocity = Math.min(ballXvelocity * GameParameters.TIME_FACTOR, GameParameters.BALL_RADIUS / 2);;
             // shiftBall(distance);
         }
-
         gameStatus.setBallXpos(gameStatus.getBallXpos() + ballXvelocity);
         gameStatus.setBallYpos(gameStatus.getBallYpos() + ballYvelocity);
     }
 
-    //
-//    private void shiftBall(double distance) {
-//
-//        double shift = Math.max(BALL_RADIUS, distance);
-//        double xPos = gameStatus.getBallX();
-//        double yPos = gameStatus.getBallY();
-//
-//        if (Math.abs(xPos) < 0) {
-//            gameStatus.setBallX(xPos + 2*shift);
-//        } else if (Math.abs(BOARD_WIDTH - xPos) < shift) {
-//            gameStatus.setBallX(xPos - 2*shift);
-//        }
-//
-//        if (Math.abs(yPos) < 0) {
-//            gameStatus.setBallY(yPos + 2*shift);
-//        } else if (Math.abs(BOARD_HEIGHT - yPos) < shift) {
-//            gameStatus.setBallY(yPos - 2*shift);
-//        }
-//    }
-//
     private boolean checkRacketCollisions() {
 
-        return gameStatus.getBallXpos() < GameParameters.RACKET_WIDTH ||
-                gameStatus.getBallXpos() > GameParameters.BOARD_WIDTH - GameParameters.BALL_RADIUS - GameParameters.RACKET_WIDTH;
+        boolean hitLeftRacket = gameStatus.getBallXpos() < GameParameters.RACKET_WIDTH &&
+                gameStatus.getBallXpos() > 0 &&
+                gameStatus.getBallYpos() > gameStatus.getPlayer1racket() &&
+                gameStatus.getBallYpos() < gameStatus.getPlayer1racket() + GameParameters.RACKET_HEIGHT;
+        boolean hitRightRacket = gameStatus.getBallXpos() < GameParameters.BOARD_WIDTH &&
+                gameStatus.getBallXpos() > GameParameters.BOARD_WIDTH - GameParameters.RACKET_WIDTH - GameParameters.BALL_RADIUS &&
+                gameStatus.getBallYpos() > gameStatus.getPlayer2racket() &&
+                gameStatus.getBallYpos() < gameStatus.getPlayer2racket() + GameParameters.RACKET_HEIGHT;
+        return hitLeftRacket || hitRightRacket;
     }
 
     private boolean checkBorderCollisions() {
