@@ -36,11 +36,7 @@ public class ServerDao {
         is = clientSocket.getInputStream();
         ois = new ObjectInputStream(is);
 
-        try {
-            return (double) ois.readObject();
-        } catch (ClassNotFoundException e) {
-            throw new IOException();
-        }
+        return ois.readDouble();
     }
 
     public void sendGameStatus(GameStatus gameStatus) throws IOException {

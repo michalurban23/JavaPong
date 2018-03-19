@@ -36,6 +36,11 @@ public class MatchController implements Runnable {
         determinePlayers();
 
         while (matchRunning) {
+            try {
+                Thread.sleep(GameParameters.THROTTLE);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             sendData();
             readData();
             controller.analyzeGameStatus();

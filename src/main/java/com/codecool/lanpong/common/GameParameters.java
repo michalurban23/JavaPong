@@ -13,8 +13,19 @@ public class GameParameters {
 
     public final static double BALL_STARTING_X = BOARD_WIDTH / 2;
     public final static double BALL_STARTING_Y = BOARD_HEIGHT / 2;
-    public final static double BALL_STARTING_ANGLE = (new Random()).nextBoolean() ? 0d : 180d;
-    public final static double BALL_STARTING_SPEED = 10d;
+    public final static double BALL_STARTING_ANGLE = calculateRandomAngle();
+
+    public final static double BALL_STARTING_SPEED = 1d;
+    public final static double TIME_FACTOR = 1.2d;
 
     public final static double GAME_SPEED = 10;
+    public final static long THROTTLE = 10;
+
+    private static double calculateRandomAngle() {
+
+        Random rand = new Random();
+        double angle = 180*rand.nextInt(2) - 45 + rand.nextInt(90);
+
+        return 2 * Math.PI * angle/360;
+    }
 }
